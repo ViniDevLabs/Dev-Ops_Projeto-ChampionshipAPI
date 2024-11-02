@@ -6,6 +6,7 @@ import com.jp.championshipapi.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -31,5 +32,10 @@ public class GameServiceImpl implements GameService {
     @Override
     public List<Game> teamsGames(Team team) {
         return gameRepository.findAllByTeam(team);
+    }
+
+    @Override
+    public Game findById(UUID id) {
+        return gameRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 }
