@@ -64,12 +64,4 @@ public class Player {
     public void setPosition(String position) {
         this.position = position;
     }
-
-    public int getHability() {
-        return habilityPoints;
-    }
-
-    public void setHability(int hability) {
-        this.habilityPoints = hability;
-    }
 }
