@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -63,5 +64,17 @@ public class Player {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player player)) return false;
+        return age == player.age && habilityPoints == player.habilityPoints && gameCount == player.gameCount && Objects.equals(id, player.id) && Objects.equals(name, player.name) && Objects.equals(position, player.position);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, position, habilityPoints, gameCount);
     }
 }

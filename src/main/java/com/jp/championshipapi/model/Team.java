@@ -2,6 +2,7 @@ package com.jp.championshipapi.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,8 +11,8 @@ public class Team {
     @Id
     private UUID id = UUID.randomUUID();
     private String name;
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Player> playerList;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Player> playerList = new ArrayList<>();
     private int rankingPoints;
 
 

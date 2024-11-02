@@ -37,10 +37,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void removePlayer(Player player, Team team) {
+    public Team removePlayer(Player player, Team team) {
         if(team.getPlayerList().contains(player)) {
             team.getPlayerList().remove(player);
             teamRepository.save(team);
         }
+        return team;
     }
 }

@@ -11,5 +11,5 @@ public interface TeamService {
     Team findById(UUID id);
     Team create(Team team);
     Team addPlayer(Player player, Team team);
-    void removePlayer(Player player, Team team);
+    Team removePlayer(Player player, Team team);
 }
