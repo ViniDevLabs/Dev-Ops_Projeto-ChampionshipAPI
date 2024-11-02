@@ -43,6 +43,9 @@ public class ChampionshipController {
     @PostMapping("/addTeam")
     @Operation(summary = "Add a team to the championship")
     public ResponseEntity<TableEntryDTO> addTeam(@RequestBody ChampionshipTeamAddDTO ctaDTO) {
+        if(ctaDTO.championshipId() == null) {
+            throw new IllegalArgumentException("Championship not found");
+        }
         Team team = teamService.findById(ctaDTO.teamId());
         Championship championship = championshipService.findById(ctaDTO.championshipId());
         TableEntryDTO row = championshipService.addTeam(team, championship);

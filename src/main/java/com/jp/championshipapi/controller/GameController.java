@@ -34,7 +34,7 @@ public class GameController {
         Team homeTeam = teamService.findById(gameToScheduleDTO.homeTeamId());
         Team awayTeam = teamService.findById(gameToScheduleDTO.awayTeamId());
         if(homeTeam == null || awayTeam == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("One or more teams don't exist");
         }
         newGame.setHomeTeam(homeTeam);
         newGame.setAwayTeam(awayTeam);
@@ -51,7 +51,7 @@ public class GameController {
     public ResponseEntity<TeamDTO> play(@PathVariable UUID id, @RequestBody GameResultDTO gameResultDTO) {
         Game scheduledGame = gameService.findById(id);
         if(scheduledGame == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("This game hasn't been scheduled");
         }
         Team teamThatWon = gameService.play(scheduledGame, gameResultDTO.awayTeamGoals(), gameResultDTO.homeTeamGoals());
         return ResponseEntity.ok(new TeamDTO(teamThatWon.getName(), teamThatWon.getPlayerList(), teamThatWon.getRankingPoints()));
@@ -62,7 +62,7 @@ public class GameController {
     public ResponseEntity<List<GameDTO>> findAll(@PathVariable UUID id) {
         Team team = teamService.findById(id);
         if(team == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Team not found");
         }
         return ResponseEntity.ok(gameService.teamsGames(team).stream().map(game -> new GameDTO(game.getDate(), game.getHomeTeam().getName(), game.getAwayTeam().getName())).collect(Collectors.toList()));
     }
