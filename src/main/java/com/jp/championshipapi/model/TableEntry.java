@@ -10,8 +10,7 @@ import java.util.UUID;
 @Entity
 public class TableEntry {
     @Id
-    private UUID id;
-
+    private UUID id = UUID.randomUUID();
     @ManyToOne
     private Team team;
     @ManyToOne

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class Table {
     @Id
     private UUID id = UUID.randomUUID();
-    @OneToMany(mappedBy = "table")
+    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER)
     private List<TableEntry> tableEntries;
     @OneToOne
     @JoinColumn(name = "championship_id")

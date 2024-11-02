@@ -3,6 +3,7 @@ package com.jp.championshipapi.controller;
 import com.jp.championshipapi.dto.*;
 import com.jp.championshipapi.model.Game;
 import com.jp.championshipapi.model.Team;
+import com.jp.championshipapi.service.ChampionshipService;
 import com.jp.championshipapi.service.GameService;
 import com.jp.championshipapi.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +23,8 @@ public class GameController {
     private GameService gameService;
     @Autowired
     private TeamService teamService;
+    @Autowired
+    private ChampionshipService championshipService;
 
     @PostMapping
     @Operation(summary = "Schedule a game", description = "Schedule a game between two teams on a specific date")
@@ -35,6 +38,9 @@ public class GameController {
         }
         newGame.setHomeTeam(homeTeam);
         newGame.setAwayTeam(awayTeam);
+        if(gameToScheduleDTO.championshipId() != null) {
+            newGame.setChampionship(championshipService.findById(gameToScheduleDTO.championshipId()));
+        }
         Game createdGame = gameService.create(newGame);
         GameDTO gameDTO = new GameDTO(createdGame.getDate(), createdGame.getHomeTeam().getName(), createdGame.getAwayTeam().getName());
         return ResponseEntity.ok(gameDTO);

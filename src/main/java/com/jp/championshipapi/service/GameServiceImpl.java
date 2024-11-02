@@ -2,9 +2,11 @@ package com.jp.championshipapi.service;
 
 import com.jp.championshipapi.model.Game;
 import com.jp.championshipapi.model.Player;
+import com.jp.championshipapi.model.TableEntry;
 import com.jp.championshipapi.model.Team;
 import com.jp.championshipapi.repository.GameRepository;
 import com.jp.championshipapi.repository.PlayerRepository;
+import com.jp.championshipapi.repository.TableEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ public class GameServiceImpl implements GameService {
     private GameRepository gameRepository;
     @Autowired
     private PlayerRepository playerRepository;
+    @Autowired
+    private TableEntryRepository tableEntryRepository;
 
     @Override
     public Game create(Game game) {
@@ -30,6 +34,7 @@ public class GameServiceImpl implements GameService {
         game.setHomeTeamGoals(homeTeamGoals);
         gameRepository.save(game);
         incrementGameCount(game.getHomeTeam(), game.getAwayTeam());
+        setPoints(game);
         if(game.getAwayTeamGoals() > game.getHomeTeamGoals()) {
             return game.getAwayTeam();
         }
@@ -54,6 +59,26 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public void setPoints(Game game) {
+        TableEntry homeRow = tableEntryRepository.findByTeamAndTable(game.getHomeTeam(), game.getChampionship().getTable());
+        TableEntry awayRow = tableEntryRepository.findByTeamAndTable(game.getAwayTeam(), game.getChampionship().getTable());
+        int homePoints = 0;
+        int awayPoints = 0;
+        if (game.getHomeTeamGoals() > game.getAwayTeamGoals()) {
+            homePoints = 3;
+        } else if (game.getHomeTeamGoals() == game.getAwayTeamGoals()) {
+            homePoints = 1;
+            awayPoints = 1;
+        } else {
+            awayPoints = 3;
+        }
+        homeRow.setPoints(homeRow.getPoints() + homePoints);
+        awayRow.setPoints(awayRow.getPoints() + awayPoints);
+        tableEntryRepository.save(homeRow);
+        tableEntryRepository.save(awayRow);
+    }
+
+    @Override
     public List<Game> teamsGames(Team team) {
         return gameRepository.findAllByTeam(team);
     }
@@ -62,4 +87,6 @@ public class GameServiceImpl implements GameService {
     public Game findById(UUID id) {
         return gameRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
+
+
 }

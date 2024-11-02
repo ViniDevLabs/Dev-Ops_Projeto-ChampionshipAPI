@@ -19,6 +19,18 @@ public class Game {
     private int awayTeamGoals;
     private LocalDate date;
 
+    @ManyToOne
+    @JoinColumn(name = "championship_id")
+    private Championship championship;
+
+    public Championship getChampionship() {
+        return championship;
+    }
+
+    public void setChampionship(Championship championship) {
+        this.championship = championship;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -66,4 +78,6 @@ public class Game {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+
 }
