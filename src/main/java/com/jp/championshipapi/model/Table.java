@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Entity
+@Entity(name = "championship_table")
 public class Table {
     @Id
     private UUID id = UUID.randomUUID();
-    @OneToMany
+    @OneToMany(mappedBy = "table")
     private List<TableEntry> tableEntries;
     @OneToOne
-    @JoinColumn(name = "championship_id")  // Define a chave estrangeira explicitamente
+    @JoinColumn(name = "championship_id")
     private Championship championship;
 
     public void setId(UUID id) {

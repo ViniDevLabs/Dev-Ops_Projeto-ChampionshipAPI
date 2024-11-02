@@ -1,9 +1,10 @@
 package com.jp.championshipapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -17,6 +18,11 @@ public class Player {
     private String position;
     private int habilityPoints;
     private int gameCount;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    @JsonIgnore
+    private Team team;
 
     public UUID getId() {
         return id;
@@ -64,6 +70,14 @@ public class Player {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     @Override

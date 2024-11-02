@@ -11,7 +11,7 @@ public class Team {
     @Id
     private UUID id = UUID.randomUUID();
     private String name;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
     private List<Player> playerList = new ArrayList<>();
     private int rankingPoints;
 
@@ -47,4 +47,6 @@ public class Team {
     public void setRankingPoints(int rankingPoints) {
         this.rankingPoints = rankingPoints;
     }
+
+
 }

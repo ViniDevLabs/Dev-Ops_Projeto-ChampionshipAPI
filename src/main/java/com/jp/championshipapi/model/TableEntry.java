@@ -10,13 +10,14 @@ import java.util.UUID;
 @Entity
 public class TableEntry {
     @Id
-    private UUID uuid;
+    private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "team_id")
     private Team team;
     @ManyToOne
+    @JoinColumn(name = "championship_table_id")
     private Table table;
+
     private int points;
 
     public Team getTeam() {
@@ -27,12 +28,12 @@ public class TableEntry {
         this.team = team;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getId() {
+        return id;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public int getPoints() {

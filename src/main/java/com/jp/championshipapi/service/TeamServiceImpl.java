@@ -2,6 +2,7 @@ package com.jp.championshipapi.service;
 
 import com.jp.championshipapi.model.Player;
 import com.jp.championshipapi.model.Team;
+import com.jp.championshipapi.repository.PlayerRepository;
 import com.jp.championshipapi.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import java.util.UUID;
 public class TeamServiceImpl implements TeamService {
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private PlayerRepository playerRepository;
 
     @Override
     public List<Team> findAll() {
@@ -33,6 +36,8 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Team addPlayer(Player player, Team team) {
         team.getPlayerList().add(player);
+        player.setTeam(team);
+        playerRepository.save(player);
         return teamRepository.save(team);
     }
 
