@@ -1,20 +1,13 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:champsAPI
-    username: champAPI
-    password:
+    url: jdbc:mysql://localhost:3306/championshipAPI
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    show-sql: true
     open-in-view: false
     hibernate:
       ddl-auto: create # validate | update | create | create-drop
     properties:
       hibernate:
         format_sql: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        trace: false
-        web-allow-others: false
