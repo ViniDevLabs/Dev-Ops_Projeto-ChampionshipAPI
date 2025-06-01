@@ -67,8 +67,8 @@ public class TeamController {
 
     @DeleteMapping("/removePlayer")
     @Operation(summary = "Remove a player from the team")
-    public ResponseEntity<TeamDTO> removePlayer(@RequestParam UUID playerid, @RequestParam UUID teamId) {
-        Player player = playerService.findById(playerid);
+    public ResponseEntity<TeamDTO> removePlayer(@RequestParam UUID playerId, @RequestParam UUID teamId) {
+        Player player = playerService.findById(playerId);
         Team team = teamService.findById(teamId);
         if (team == null || player == null) {
             throw new IllegalArgumentException("Invalid team or player ID.");

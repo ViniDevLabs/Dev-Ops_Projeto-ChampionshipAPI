@@ -12,6 +12,14 @@ public class Championship {
     @OneToOne(mappedBy = "championship")
     private Table table;
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public Table getTable() {
         return table;
     }
