@@ -1,13 +1,12 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/championshipAPI
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://localhost:5432/championship-api
+    username: postgres
+    password: postgres
   jpa:
-    open-in-view: false
+    show-sql: true
     hibernate:
       ddl-auto: update # validate | update | create | create-drop
     properties:
       hibernate:
-        format_sql: true
+       "[format_sql]": true
