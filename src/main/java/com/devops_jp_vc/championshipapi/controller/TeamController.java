@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/team")
 public class TeamController {
     @Autowired
     private TeamService teamService;

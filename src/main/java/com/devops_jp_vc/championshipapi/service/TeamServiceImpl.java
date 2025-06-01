@@ -31,6 +31,9 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team create(Team team) {
+        for (Player player : team.getPlayerList()) {
+            playerRepository.save(player);
+        }
         return teamRepository.save(team);
     }
 

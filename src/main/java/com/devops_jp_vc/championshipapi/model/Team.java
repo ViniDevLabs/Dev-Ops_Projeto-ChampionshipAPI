@@ -15,6 +15,10 @@ public class Team {
     private List<Player> playerList = new ArrayList<>();
     private int rankingPoints;
 
+    public Team() {
+
+    }
+
     public String getName() {
         return name;
     }
