@@ -2,8 +2,6 @@ FROM maven:3.9.9-eclipse-temurin-21-alpine
 RUN mkdir /root/api && mkdir /root/.m2
 COPY . /root/api
 WORKDIR /root/api
-ENV TZ=America/Fortaleza
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN mvn clean package -DskipTests
 RUN mv target/*.jar target/app.jar
 EXPOSE 8080
