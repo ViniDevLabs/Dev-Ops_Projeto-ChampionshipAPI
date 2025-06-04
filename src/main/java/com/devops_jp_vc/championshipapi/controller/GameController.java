@@ -12,10 +12,8 @@ import com.devops_jp_vc.championshipapi.service.ChampionshipService;
 import com.devops_jp_vc.championshipapi.service.GameService;
 import com.devops_jp_vc.championshipapi.service.TeamService;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/game")
@@ -70,6 +68,6 @@ public class GameController {
         }
         return ResponseEntity.ok(gameService.teamsGames(team).stream()
                 .map(game -> new GameDTO(game.getDate(), game.getHomeTeam().getName(), game.getAwayTeam().getName()))
-                .collect(Collectors.toList()));
+                .toList());
     }
 }

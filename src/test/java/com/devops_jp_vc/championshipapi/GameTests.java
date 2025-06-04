@@ -1,5 +1,6 @@
 package com.devops_jp_vc.championshipapi;
 
+import com.devops_jp_vc.championshipapi.controller.GameController;
 import com.devops_jp_vc.championshipapi.model.Championship;
 import com.devops_jp_vc.championshipapi.model.Game;
 import com.devops_jp_vc.championshipapi.model.Team;
@@ -10,15 +11,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -27,17 +26,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
 @AutoConfigureMockMvc
+@WebMvcTest(controllers = GameController.class)
 class GameTests {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private TeamService teamService;
-    @MockBean
+    @MockitoBean
     private GameService gameService;
-    @MockBean
+    @MockitoBean
     private ChampionshipService championshipService;
 
     private Team teamMock1;

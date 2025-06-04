@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: local
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST}:5432/${POSTGRES_DB}
     username: ${POSTGRES_USER}

@@ -28,6 +28,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUnexpectedException(Throwable unexpectedException) {
         String message = "Unexpected server error.";
         logger.error(message, unexpectedException);
-        return new ResponseEntity<>("Unexcpected Exception.", HttpStatus.INTERNAL_SERVER_ERROR); // 500
+        return new ResponseEntity<>("Unexpected Exception.", HttpStatus.INTERNAL_SERVER_ERROR); // 500
     }
 }

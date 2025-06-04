@@ -11,10 +11,8 @@ import com.devops_jp_vc.championshipapi.model.Player;
 import com.devops_jp_vc.championshipapi.service.PlayerService;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/player")
@@ -41,7 +39,7 @@ public class PlayerController {
         List<Player> playerList = playerService.findAll();
         List<PlayerDTO> returnList = playerList.stream()
                 .map(p -> new PlayerDTO(p.getName(), p.getAge(), p.getHabilityPoints(), p.getPosition()))
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(returnList);
     }
 

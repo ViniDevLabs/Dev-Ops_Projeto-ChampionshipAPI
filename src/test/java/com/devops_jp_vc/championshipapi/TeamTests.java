@@ -1,21 +1,17 @@
 package com.devops_jp_vc.championshipapi;
 
-import com.devops_jp_vc.championshipapi.controller.PlayerController;
 import com.devops_jp_vc.championshipapi.controller.TeamController;
 import com.devops_jp_vc.championshipapi.model.Player;
 import com.devops_jp_vc.championshipapi.model.Team;
 import com.devops_jp_vc.championshipapi.service.PlayerService;
 import com.devops_jp_vc.championshipapi.service.TeamService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,19 +25,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@SpringBootTest(classes = ChampionshipApiApplication.class)
-@ExtendWith(SpringExtension.class)
-@Transactional
-public class TeamTests {
+@WebMvcTest(controllers = TeamController.class)
+class TeamTests {
     @Autowired
     private MockMvc mockMvc;
 
-    private TeamController teamController;
-    private PlayerController playerController;
-
-    @MockBean
+    @MockitoBean
     private TeamService teamService;
-    @MockBean
+    @MockitoBean
     private PlayerService playerService;
 
     @Test

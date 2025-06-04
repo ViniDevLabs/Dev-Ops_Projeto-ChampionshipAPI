@@ -9,7 +9,6 @@ import com.devops_jp_vc.championshipapi.dto.ChampionshipDTO;
 import com.devops_jp_vc.championshipapi.dto.ChampionshipTeamAddDTO;
 import com.devops_jp_vc.championshipapi.dto.TableEntryDTO;
 import com.devops_jp_vc.championshipapi.model.Championship;
-import com.devops_jp_vc.championshipapi.model.TableEntry;
 import com.devops_jp_vc.championshipapi.model.Team;
 import com.devops_jp_vc.championshipapi.service.ChampionshipService;
 import com.devops_jp_vc.championshipapi.service.TeamService;

@@ -13,7 +13,6 @@ import com.devops_jp_vc.championshipapi.service.TeamService;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/team")
@@ -37,7 +36,7 @@ public class TeamController {
         List<Team> teams = teamService.findAll();
         List<TeamDTO> teamDTOList = teams.stream()
                 .map(t -> new TeamDTO(t.getName(), t.getPlayerList(), t.getRankingPoints()))
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(teamDTOList);
     }
 

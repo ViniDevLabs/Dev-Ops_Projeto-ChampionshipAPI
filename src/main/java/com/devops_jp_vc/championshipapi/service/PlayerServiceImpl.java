@@ -3,7 +3,6 @@ package com.devops_jp_vc.championshipapi.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.devops_jp_vc.championshipapi.dto.PlayerDTO;
 import com.devops_jp_vc.championshipapi.model.Player;
 import com.devops_jp_vc.championshipapi.repository.PlayerRepository;
 
