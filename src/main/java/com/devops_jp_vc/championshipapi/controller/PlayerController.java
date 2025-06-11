@@ -1,7 +1,8 @@
 package com.devops_jp_vc.championshipapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,9 +17,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/player")
+@RequiredArgsConstructor
 public class PlayerController {
-    @Autowired
-    private PlayerService playerService;
+    private final PlayerService playerService;
 
     @PostMapping
     @Operation(summary = "Create a player")

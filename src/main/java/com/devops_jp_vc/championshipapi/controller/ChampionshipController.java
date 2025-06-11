@@ -1,7 +1,8 @@
 package com.devops_jp_vc.championshipapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +19,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/championship")
+@RequiredArgsConstructor
 public class ChampionshipController {
-    @Autowired
-    private ChampionshipService championshipService;
-    @Autowired
-    private TeamService teamService;
+    private final ChampionshipService championshipService;
+    private final TeamService teamService;
 
     @PostMapping
     @Operation(summary = "Create a Championship")

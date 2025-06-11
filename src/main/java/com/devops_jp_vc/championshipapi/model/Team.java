@@ -1,54 +1,28 @@
 package com.devops_jp_vc.championshipapi.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class Team {
     @Id
+    @Builder.Default
     private UUID id = UUID.randomUUID();
     private String name;
+
     @OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
+    @Builder.Default
     private List<Player> playerList = new ArrayList<>();
     private int rankingPoints;
-
-    public Team() {
-
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Player> getPlayerList() {
-        return playerList;
-    }
-
-    public void setPlayerList(List<Player> playerList) {
-        this.playerList = playerList;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public int getRankingPoints() {
-        return rankingPoints;
-    }
-
-    public void setRankingPoints(int rankingPoints) {
-        this.rankingPoints = rankingPoints;
-    }
-
 }

@@ -1,6 +1,5 @@
-package com.devops_jp_vc.championshipapi.service;
+package com.devops_jp_vc.championshipapi.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devops_jp_vc.championshipapi.dto.TableEntryDTO;
@@ -8,19 +7,19 @@ import com.devops_jp_vc.championshipapi.model.*;
 import com.devops_jp_vc.championshipapi.repository.ChampionshipRepository;
 import com.devops_jp_vc.championshipapi.repository.TableEntryRepository;
 import com.devops_jp_vc.championshipapi.repository.TableRepository;
+import com.devops_jp_vc.championshipapi.service.ChampionshipService;
+
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ChampionshipServiceImpl implements ChampionshipService {
-    @Autowired
-    private ChampionshipRepository championshipRepository;
-    @Autowired
-    private TableRepository tableRepository;
-    @Autowired
-    private TableEntryRepository tableEntryRepository;
+    private final ChampionshipRepository championshipRepository;
+    private final TableRepository tableRepository;
+    private final TableEntryRepository tableEntryRepository;
 
     @Override
     public Table create(Championship championship) {
@@ -47,7 +46,7 @@ public class ChampionshipServiceImpl implements ChampionshipService {
     @Override
     public List<TableEntryDTO> getTable(Championship championship) {
         return championship.getTable().getTableEntries().stream()
-                .map(te -> (new TableEntryDTO(te.getTeam().getName(), te.getPoints()))).collect(Collectors.toList());
+                .map(te -> (new TableEntryDTO(te.getTeam().getName(), te.getPoints()))).toList();
     }
 
     @Override
@@ -57,10 +56,12 @@ public class ChampionshipServiceImpl implements ChampionshipService {
 
     @Override
     public TableEntryDTO addTeam(Team team, Championship championship) {
-        TableEntry tableEntry = new TableEntry();
-        tableEntry.setPoints(0);
-        tableEntry.setTable(championship.getTable());
-        tableEntry.setTeam(team);
+        TableEntry tableEntry = TableEntry.builder()
+                .points(0)
+                .table(championship.getTable())
+                .team(team)
+                .build();
+
         tableEntryRepository.save(tableEntry);
         championship.getTable().getTableEntries().add(tableEntry);
         return new TableEntryDTO(team.getName(), 0);

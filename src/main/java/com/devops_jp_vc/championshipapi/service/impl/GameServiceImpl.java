@@ -1,6 +1,5 @@
-package com.devops_jp_vc.championshipapi.service;
+package com.devops_jp_vc.championshipapi.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devops_jp_vc.championshipapi.model.Game;
@@ -10,18 +9,19 @@ import com.devops_jp_vc.championshipapi.model.Team;
 import com.devops_jp_vc.championshipapi.repository.GameRepository;
 import com.devops_jp_vc.championshipapi.repository.PlayerRepository;
 import com.devops_jp_vc.championshipapi.repository.TableEntryRepository;
+import com.devops_jp_vc.championshipapi.service.GameService;
+
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class GameServiceImpl implements GameService {
-    @Autowired
     private GameRepository gameRepository;
-    @Autowired
     private PlayerRepository playerRepository;
-    @Autowired
     private TableEntryRepository tableEntryRepository;
 
     @Override

@@ -1,19 +1,21 @@
-package com.devops_jp_vc.championshipapi.service;
+package com.devops_jp_vc.championshipapi.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devops_jp_vc.championshipapi.model.Player;
 import com.devops_jp_vc.championshipapi.repository.PlayerRepository;
+import com.devops_jp_vc.championshipapi.service.PlayerService;
+
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
-    @Autowired
-    private PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
 
     @Override
     public Player findById(UUID id) {

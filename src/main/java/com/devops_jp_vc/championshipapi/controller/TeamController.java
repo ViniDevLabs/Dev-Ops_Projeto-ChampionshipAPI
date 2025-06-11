@@ -1,7 +1,8 @@
 package com.devops_jp_vc.championshipapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +17,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/team")
+@RequiredArgsConstructor
 public class TeamController {
-    @Autowired
-    private TeamService teamService;
-    @Autowired
-    private PlayerService playerService;
+    private final TeamService teamService;
+    private final PlayerService playerService;
 
     @PostMapping
     @Operation(summary = "Create a new team")

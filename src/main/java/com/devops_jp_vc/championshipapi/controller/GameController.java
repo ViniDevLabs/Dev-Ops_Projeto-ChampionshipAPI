@@ -1,7 +1,8 @@
 package com.devops_jp_vc.championshipapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +18,11 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/game")
+@RequiredArgsConstructor
 public class GameController {
-    @Autowired
-    private GameService gameService;
-    @Autowired
-    private TeamService teamService;
-    @Autowired
-    private ChampionshipService championshipService;
+    private final GameService gameService;
+    private final TeamService teamService;
+    private final ChampionshipService championshipService;
 
     @PostMapping
     @Operation(summary = "Schedule a game", description = "Schedule a game between two teams on a specific date")

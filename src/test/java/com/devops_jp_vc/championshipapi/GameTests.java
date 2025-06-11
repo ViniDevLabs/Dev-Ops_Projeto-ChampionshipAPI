@@ -46,23 +46,26 @@ class GameTests {
     @BeforeEach
     void setup() {
         // Criação dos times
-        teamMock1 = new Team();
-        teamMock1.setId(UUID.randomUUID());
-        teamMock1.setName("Flamengo");
-        teamMock1.setRankingPoints(10);
-        teamMock1.setPlayerList(new ArrayList<>());
+        teamMock1 = Team.builder()
+                .id(UUID.randomUUID())
+                .name("Flamengo")
+                .rankingPoints(10)
+                .playerList(new ArrayList<>())
+                .build();
 
-        teamMock2 = new Team();
-        teamMock2.setId(UUID.randomUUID());
-        teamMock2.setName("ABC");
-        teamMock2.setRankingPoints(10);
-        teamMock2.setPlayerList(new ArrayList<>());
+        teamMock2 = Team.builder()
+                .id(UUID.randomUUID())
+                .name("ABC")
+                .rankingPoints(10)
+                .playerList(new ArrayList<>())
+                .build();
 
         // Criando um campeonato para ter jogo
         championshipId = UUID.randomUUID();
-        Championship championship = new Championship();
-        championship.setId(championshipId);
-        championship.setName("Copa do Brasil");
+        Championship championship = Championship.builder()
+                .id(championshipId)
+                .name("Copa do Brasil")
+                .build();
 
         when(teamService.findById(teamMock1.getId())).thenReturn(teamMock1);
         when(teamService.findById(teamMock2.getId())).thenReturn(teamMock2);
@@ -73,28 +76,28 @@ class GameTests {
     void marcarJogo() throws Exception {
         LocalDate gameDate = LocalDate.now();
 
-        Game game = new Game();
-        game.setDate(gameDate);
-        game.setHomeTeam(teamMock1);
-        game.setAwayTeam(teamMock2);
+        Game game = Game.builder()
+                .date(gameDate)
+                .homeTeam(teamMock1)
+                .awayTeam(teamMock2)
+                .build();
 
         when(gameService.create(any(Game.class))).thenReturn(game);
 
         String payload = String.format("""
-        {
-            "date": "%s",
-            "homeTeamId": "%s",
-            "awayTeamId": "%s",
-            "championshipId": "%s"
-        }
-        """, gameDate, teamMock1.getId(), teamMock2.getId(), championshipId);
+                {
+                    "date": "%s",
+                    "homeTeamId": "%s",
+                    "awayTeamId": "%s",
+                    "championshipId": "%s"
+                }
+                """, gameDate, teamMock1.getId(), teamMock2.getId(), championshipId);
 
         mockMvc.perform(post("/game")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(payload))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.homeTeamName").value("Flamengo"))
                 .andExpect(jsonPath("$.awayTeamName").value("ABC"));
     }
 }
-
