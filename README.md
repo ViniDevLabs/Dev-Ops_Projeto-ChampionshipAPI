@@ -1,5 +1,11 @@
 # Championship API
 
+## Modelo de Dados
+
+O diagrama de classes abaixo representa as principais entidades e seus relacionamentos no sistema.
+
+![Diagrama de classes](./docs/diagrama-classes-championship-api.png)
+
 ## Executando o projeto localmente
 
 **O banco de dados PostgreSQL deve estar em execução antes de iniciar a aplicação.**

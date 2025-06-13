@@ -6,8 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-
 
 @Data
 @AllArgsConstructor
@@ -22,4 +23,8 @@ public class Championship {
 
     @OneToOne(mappedBy = "championship")
     private Table table;
+
+    @OneToMany(mappedBy = "championship", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Game> games = new ArrayList<>();
 }

@@ -21,10 +21,10 @@ public class Table {
     @Builder.Default
     private UUID id = UUID.randomUUID();
 
-    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "table", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Singular
     private List<TableEntry> tableEntries;
-    
+
     @OneToOne
     @JoinColumn(name = "championship_id")
     private Championship championship;

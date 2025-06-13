@@ -24,5 +24,9 @@ public class Team {
     @OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
     @Builder.Default
     private List<Player> playerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<TableEntry> tableEntries = new ArrayList<>();
     private int rankingPoints;
 }
