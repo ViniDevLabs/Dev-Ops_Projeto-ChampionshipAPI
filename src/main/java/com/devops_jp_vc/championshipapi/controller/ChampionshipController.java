@@ -30,7 +30,7 @@ public class ChampionshipController {
         Championship championship = new Championship();
         championship.setName(championshipDTO.championshipName());
         championshipService.create(championship);
-        return ResponseEntity.ok().body("Championship " + championship.getName() + "has been created");
+        return ResponseEntity.ok().body("Championship " + championship.getName() + " has been created");
     }
 
     @GetMapping("/{id}")
