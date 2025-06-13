@@ -1,24 +1,12 @@
-image: maven:3.9.9-eclipse-temurin-21-alpine
 stages:
-  - build
-  - test
+  - build-and-test
   - package
 
-build-job:
-  stage: build
+build-and-test-job:
+  stage: build-and-test
+  image: maven:3.9.9-eclipse-temurin-21-alpine
   script:
-    - mvn clean package -DskipTests 
-  artifacts:
-    paths:
-      - target/
-    expire_in: 1 hour
-
-test-job:
-  stage: test
-  script: 
-    - mvn test
-  dependencies:
-    - build-job
+    - mvn clean verify
 
 package-job:
   stage: package
