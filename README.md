@@ -1,5 +1,10 @@
 # Championship API
 
+## Autores
+
+| [<img src="https://avatars.githubusercontent.com/u/77846057?v=4" width=135><br><sub>João Pedro</sub>](https://github.com/JoaoPFranca) | [<img src="https://avatars.githubusercontent.com/u/79117259?v=4" width=135><br><sub>Vinicius César</sub>](https://github.com/viniTheCsar) |
+| :---: | :---: |
+
 ## Sumário
 
 - [Sobre o Projeto](#sobre-o-projeto)
