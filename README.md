@@ -15,7 +15,7 @@
 - [Executando o projeto localmente](#executando-o-projeto-localmente)
   - [1. Iniciando o Banco de Dados](#1-iniciando-o-banco-de-dados-postgresql-com-docker-compose)
   - [2. Executando a aplicação](#2-executando-a-aplicação-spring-boot)
-  - [Opcional. Execução em Modo Produção](#opcional-executar-versão-que-deve-ser-utilizada-em-produção)
+  - [Executando com Docker](#executando-com-docker)
 
 ## Sobre o projeto
 
@@ -80,9 +80,9 @@ mvn spring-boot:run
 Após inicializada, ela estará disponível em [http://localhost:8080](http://localhost:8080).</br>
 Também será possível acessar a documentalçao gerada pelo Swagger em [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
 
-### Opcional. Executar versão que deve ser utilizada em produção
+### Executando com Docker
 
-Também é possível executar a versão completa da aplicação em modo produção utilizando o Docker Compose. Esse comando vai iniciar tanto o container do banco PostgreSQL quanto o da API:
+Também é possível executar a versão completa da aplicação utilizando o Docker Compose. Esse comando vai iniciar tanto o container do banco PostgreSQL quanto o da API:
 
 ```bash
 docker compose up -d
