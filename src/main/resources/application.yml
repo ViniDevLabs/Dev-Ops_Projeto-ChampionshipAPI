@@ -13,3 +13,9 @@ spring:
       ddl-auto: create
     properties:
       dialect: org.hibernate.dialect.PostgreSQLDialect
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
