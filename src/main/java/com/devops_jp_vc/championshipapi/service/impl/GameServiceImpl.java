@@ -20,9 +20,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class GameServiceImpl implements GameService {
-    private GameRepository gameRepository;
-    private PlayerRepository playerRepository;
-    private TableEntryRepository tableEntryRepository;
+    private final GameRepository gameRepository;
+    private final PlayerRepository playerRepository;
+    private final TableEntryRepository tableEntryRepository;
 
     @Override
     public Game create(Game game) {
