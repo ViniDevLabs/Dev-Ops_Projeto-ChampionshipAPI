@@ -1,0 +1,233 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: championship-api-postgres-secret
+type: Opaque
+data:
+  # Base 64 para "postgres"
+  POSTGRES_USER: cG9zdGdyZXM=
+  POSTGRES_PASSWORD: cG9zdGdyZXM=
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: balanced
+provisioner: pd.csi.storage.gke.io
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  type: pd-balanced
+  replication-type: none
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: championship-api-postgres
+spec:
+  type: ClusterIP
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: championship-api-postgres-statefulset
+spec:
+  serviceName: "championship-api-postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:17.5
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "championship-api"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: championship-api-postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: championship-api-postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+          startupProbe:
+            exec:
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "pg_isready --username=${POSTGRES_USER} --dbname=${POSTGRES_DB}"
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe:
+            exec:
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "pg_isready --username=${POSTGRES_USER} --dbname=${POSTGRES_DB}"
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            exec:
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "pg_isready --username=${POSTGRES_USER} --dbname=${POSTGRES_DB}"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 5
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "balanced"
+        resources:
+          requests:
+            storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: championship-api-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: championship-api-deployment
+  template:
+    metadata:
+      labels:
+        app: championship-api-deployment
+    spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: postgres:17.5-alpine3.22
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: championship-api-postgres-secret
+                  key: POSTGRES_USER
+          command:
+            - "/bin/sh"
+            - "-c"
+            - 'until pg_isready -h championship-api-postgres -p 5432 -U ${POSTGRES_USER}; do echo "Aguardando o Postgresql..."; sleep 2; done;'
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+      containers:
+        - name: championship-api-backend
+          image: registry.gitlab.com/devops-project-ufrn/championshipapi:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_HOST
+              value: "championship-api-postgres"
+            - name: POSTGRES_DB
+              value: "championship-api"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: championship-api-postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: championship-api-postgres-secret
+                  key: POSTGRES_PASSWORD
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+          startupProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: championship-api-service
+spec:
+  type: ClusterIP
+  selector:
+    app: championship-api-deployment
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: championship-api-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "championship-api-static-ip"
+spec:
+  rules:
+    - host: championship-api.duckdns.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: championship-api-service
+                port:
+                  number: 80
