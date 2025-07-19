@@ -15,8 +15,3 @@ variable "cluster_name" {
   type        = string
   default     = "devops-cluster-1"
 }
-
-variable "gcp_credentials" {
-  description = "Credenciais para acesso ao GCP"
-  type = string
-}

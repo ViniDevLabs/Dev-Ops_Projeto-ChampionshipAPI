@@ -8,7 +8,6 @@ terraform {
 }
 
 provider "google" {
-  credentials = var.gcp_credentials
   project     = var.project_id
   region      = var.region
   scopes      = ["https://www.googleapis.com/auth/cloud-platform"]
