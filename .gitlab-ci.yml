@@ -1,21 +1,65 @@
 stages:
   - build-and-test
+  - version
   - package
 
 build-and-test-job:
   stage: build-and-test
   image: maven:3.9.9-eclipse-temurin-21-alpine
+  only:
+    - branches
   script:
     - mvn clean verify
+
+version-job:
+  stage: version
+  image: alpine:3.22.1
+  needs:
+    - build-and-test-job
+  only:
+    - main
+  script:
+    - apk update && apk add git
+
+    - git config --global user.name "Gitlab CI"
+    - git config --global user.email "gitlab-ci@${CI_SERVER_HOST}"
+    - git remote set-url origin "https://vinithecsar:${GITLAB_PAT}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+    - git fetch --tags
+
+    - ULTIMA_TAG=$(git tag --list 'v*.*.*' | sort -V | tail -n 1)
+    - ULTIMA_TAG="${ULTIMA_TAG:-v0.0.0}"
+
+    - ULTIMA_TAG_NUM=${ULTIMA_TAG#v}
+    - MAJOR=$(echo $ULTIMA_TAG_NUM | cut -d. -f1)
+    - MINOR=$(echo $ULTIMA_TAG_NUM | cut -d. -f2)
+    - PATCH=$(echo $ULTIMA_TAG_NUM | cut -d. -f3)
+
+    - |
+      if echo "$CI_COMMIT_MESSAGE" | grep -q "\[major\]"; then
+        MAJOR=$((MAJOR + 1))
+        MINOR=0
+        PATCH=0
+      elif echo "$CI_COMMIT_MESSAGE" | grep -q "\[minor\]"; then
+        MINOR=$((MINOR + 1))
+        PATCH=0
+      else
+        PATCH=$((PATCH + 1))
+      fi
+
+    - NOVA_TAG="v$MAJOR.$MINOR.$PATCH"
+    - git tag $NOVA_TAG
+    - git push origin $NOVA_TAG
 
 package-job:
   stage: package
   image: docker:28
   services:
     - docker:28-dind
+  only:
+    - tags
   script:
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN
-    - docker build -t $CI_REGISTRY_IMAGE .
-    - docker push $CI_REGISTRY_IMAGE
-  only:
-    - main
+    - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG"
+    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG" "$CI_REGISTRY_IMAGE:latest"
+    - docker push "$CI_REGISTRY_IMAGE:latest"
