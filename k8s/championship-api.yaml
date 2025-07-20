@@ -153,7 +153,7 @@ spec:
               cpu: "250m"
       containers:
         - name: championship-api-backend
-          image: registry.gitlab.com/devops-project-ufrn/championshipapi:latest
+          image: registry.gitlab.com/devops-project-ufrn/championshipapi:v1.0.0
           ports:
             - containerPort: 8080
           env:
