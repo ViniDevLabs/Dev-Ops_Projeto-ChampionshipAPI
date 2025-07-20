@@ -1,8 +1,12 @@
 # Championship API
 
+Disponível no link: [http://championship-api.duckdns.org/](http://championship-api.duckdns.org/)
+
+Configurações do Kubernetes [no README.md da pasta k8s](k8s/README.md)
+
 ## Autores
 
-| [<img src="https://avatars.githubusercontent.com/u/77846057?v=4" width=135><br><sub>João Pedro</sub>](https://github.com/JoaoPFranca) | [<img src="https://avatars.githubusercontent.com/u/79117259?v=4" width=135><br><sub>Vinicius César</sub>](https://github.com/viniTheCsar) |
+| [<img src="https://avatars.githubusercontent.com/u/77846057?v=4" width=135><br><sub>João Pedro</sub>](https://github.com/JoaoPFranca) | [<img src="https://avatars.githubusercontent.com/u/79117259?v=4" width=135><br><sub>Vinicius César</sub>](https://github.com/vinithecsar) |
 | :---: | :---: |
 
 ## Sumário
@@ -15,7 +19,7 @@
   - [3. Etapa de Empacotamento](#3-etapa-de-empacotamento-package)
   - [4. Etapa de Preparar a Infra - Terraform](#4-etapa-de-preparar-a-infra---terraform-prepare-to-deploy)
   - [5. Etapa de Deploy para o GKE - Kubernetes](#5-etapa-de-deploy-para-o-gke---kubernetes-deploy)
-- [Entregas_da_terceira_unidade](#features-entregues-3a-unidade)
+- [Entregas da terceira unidade](#features-entregues-3a-unidade)
 - [Executando o projeto localmente](#executando-o-projeto-localmente)
   - [1. Iniciando o Banco de Dados](#1-iniciando-o-banco-de-dados-postgresql-com-docker-compose)
   - [2. Executando a aplicação](#2-executando-a-aplicação-spring-boot)
@@ -58,9 +62,9 @@ Esta etapa só é executada quando as alterações são mescladas ou enviadas di
 
 - **Propósito**: Fazer a geração automática de tags
 - **O que acontece**:
-  1. **Pegamos a tag atual**
-  2. De acordo com a mensagem no commit, definimos em qual das três subdivisões da tag vamos adicionar mais um
-    - Seguimos o conventional commits
+  1. **Pegamos a tag atual.**
+  2. De acordo com a mensagem no commit, definimos em qual das três subdivisões da tag vamos adicionar mais um.
+    - Seguimos o conventional commits.
 
 ### 3. Etapa de Empacotamento (`package`)
 
@@ -77,11 +81,11 @@ Esta etapa só é executada quando as alterações são mescladas ou enviadas di
 
 - **Propósito**: Preparar a infraestrutura usando Terraform. Essa ferramenta de IaC nos possibilita fazer um gerenciamento do estado da Infraestrutura do projeto como código, facilitando a consistência entre os ambientes.
 - **O que acontece?**:
-  1. **Autenticação**: Usamos a variável de CI/CD (`GCP_CREDENTIALS`) para guardar a nossa chave de acesso ao GKE, e a exportamos como variável de ambiente
-  2. **Inicializamos o Terraform**: Usamos o comando (`terraform init`) para preparar o ambiente Terraform (Baixar os providers, criar os arquivos internos...)
+  1. **Autenticação**: Usamos a variável de CI/CD (`GCP_CREDENTIALS`) para guardar a nossa chave de acesso ao GKE, e a exportamos como variável de ambiente.
+  2. **Inicializamos o Terraform**: Usamos o comando (`terraform init`) para preparar o ambiente Terraform (Baixar os providers, criar os arquivos internos...).
   3. **Importamos as configurações vigentes**: Usamos o comando (`terraform import`) para importar as configurações atuais da infra.
   4. **Criamos um plano**: Usamos o comando (`terraform plan -out=tfplan`) para criar um "plano de execução", e inserir dentro de "tfplan" quais as mudanças no estado da infra.
-  5. **Aplicamos**: Com (`terraform apply`), aplicamos a infraestrutura
+  5. **Aplicamos**: Com (`terraform apply`), aplicamos a infraestrutura.
 
 ### 5. Etapa de Deploy para o GKE - Kubernetes (`deploy`)
 
@@ -92,7 +96,6 @@ Esta etapa só é executada quando as alterações são mescladas ou enviadas di
   1. **Autenticação**: Usamos a variável de CI/CD (`GCP_CREDENTIALS`) para fazer a autenticação
   2. **Configuração**: Configuramos as propriedades Project ID, Zona do GKE e o nome do Cluster GKE
   3. **Deploy**: Com o comando (`kubectl apply -f ./k8s`), aplicamos as configurações em k8s/championsgip-api.yaml.
-  4. **Iniciamos os pods**
 
 ## Features entregues (3a unidade):
   - Além de todas as obrigatórias, nosso projeto conta com:
