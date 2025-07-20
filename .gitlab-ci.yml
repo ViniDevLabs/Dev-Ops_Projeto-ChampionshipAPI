@@ -69,10 +69,12 @@ package-job:
 prepare-infra-job:
   stage: prepare-to-deploy
   image:
-    name: hashicorp/terraform:1.9.5
+    name: hashicorp/terraform:1.12.2
     entrypoint:
-      - '/usr/bin/env'
-      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+      - "/usr/bin/env"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+  only:
+    - tags
   variables:
     TF_ROOT: "./terraform"
     TF_VAR_project_id: "ufrn-devops-2025-01"
@@ -89,8 +91,8 @@ prepare-infra-job:
     - terraform apply -auto-approve tfplan
 
 deploy-to-gke:
-  image: google/cloud-sdk:latest
   stage: deploy
+  image: google/cloud-sdk:530.0.0-slim
   only:
     - tags
   needs:
