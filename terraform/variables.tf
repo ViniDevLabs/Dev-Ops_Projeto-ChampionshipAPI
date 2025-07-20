@@ -13,5 +13,5 @@ variable "region" {
 variable "cluster_name" {
   description = "Cluster do Google Kubernetes Engine"
   type        = string
-  default     = "devops-cluster-1"
+  default     = "devops-cluster-2-terraform"
 }
