@@ -92,7 +92,7 @@ prepare-infra-job:
 
 deploy-to-gke:
   stage: deploy
-  image: google/cloud-sdk:530.0.0-slim
+  image: google/cloud-sdk:530.0.0
   only:
     - tags
   needs:
