@@ -3,6 +3,7 @@ stages:
   - version
   - package
   - prepare-to-deploy
+  - deploy
 
 build-and-test-job:
   stage: build-and-test
@@ -86,3 +87,20 @@ prepare-infra-job:
     - terraform import google_container_cluster.primary projects/$GCP_PROJECT_ID/locations/$GKE_ZONE/clusters/$GKE_CLUSTER_NAME
     - terraform plan -out=tfplan
     - terraform apply -auto-approve tfplan
+
+deploy-to-gke:
+  image: google/cloud-sdk:latest
+  stage: deploy
+  needs:
+    - job: prepare-infra-job
+    - job: package-job
+  variables:
+    DEPLOYMENT_NAME: devops-api-deployment
+  before_script:
+    - gcloud auth activate-service-account --key-file "$GCP_CREDENTIALS"
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud config set compute/zone $GKE_ZONE
+    - gcloud container clusters get-credentials $GKE_CLUSTER_NAME
+  script:
+    - kubectl apply -f ./k8s
+    - kubectl rollout restart deployment $DEPLOYMENT_NAME
