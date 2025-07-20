@@ -91,6 +91,8 @@ prepare-infra-job:
 deploy-to-gke:
   image: google/cloud-sdk:latest
   stage: deploy
+  only:
+    - tags
   needs:
     - job: prepare-infra-job
     - job: package-job
