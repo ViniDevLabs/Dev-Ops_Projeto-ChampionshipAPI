@@ -2,6 +2,7 @@ stages:
   - build-and-test
   - version
   - package
+  - prepare-to-deploy
 
 build-and-test-job:
   stage: build-and-test
@@ -63,3 +64,25 @@ package-job:
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG"
     - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG" "$CI_REGISTRY_IMAGE:latest"
     - docker push "$CI_REGISTRY_IMAGE:latest"
+
+prepare-infra-job:
+  stage: prepare-to-deploy
+  image:
+    name: hashicorp/terraform:1.9.5
+  variables:
+    TF_ROOT: "./terraform"
+    TF_VAR_project_id: "ufrn-devops-2025-01"
+    TF_VAR_region: "us-central1"
+    TF_VAR_cluster_name: "devops-cluster-2-terraform"
+  before_script:
+    - echo "$GCP_CREDENTIALS" > $CI_PROJECT_DIR/account.json
+    - export GOOGLE_APPLICATION_CREDENTIALS="$CI_PROJECT_DIR/account.json"
+  script:
+    - terraform --version
+    - cd $TF_ROOT
+    - terraform init
+    - terraform import google_container_cluster.primary projects/$GCP_PROJECT_ID/locations/$GKE_ZONE/clusters/$GKE_CLUSTER_NAME
+    - terraform plan -out=tfplan
+    - terraform apply -auto-approve tfplan
+  after_script:
+    - rm -f $CI_PROJECT_DIR/account.json
