@@ -78,8 +78,7 @@ prepare-infra-job:
     TF_VAR_region: "us-central1"
     TF_VAR_cluster_name: "devops-cluster-2-terraform"
   before_script:
-    - echo "$GCP_CREDENTIALS" > $CI_PROJECT_DIR/account.json
-    - export GOOGLE_APPLICATION_CREDENTIALS="$CI_PROJECT_DIR/account.json"
+    - export GOOGLE_APPLICATION_CREDENTIALS="$GCP_CREDENTIALS"
   script:
     - terraform --version
     - cd $TF_ROOT
@@ -87,5 +86,3 @@ prepare-infra-job:
     - terraform import google_container_cluster.primary projects/$GCP_PROJECT_ID/locations/$GKE_ZONE/clusters/$GKE_CLUSTER_NAME
     - terraform plan -out=tfplan
     - terraform apply -auto-approve tfplan
-  after_script:
-    - rm -f $CI_PROJECT_DIR/account.json
