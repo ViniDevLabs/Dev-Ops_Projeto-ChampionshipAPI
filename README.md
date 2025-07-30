@@ -1,6 +1,8 @@
 # Championship API
 
-Disponível no link: [http://championship-api.duckdns.org/](http://championship-api.duckdns.org/)
+O projeto foi feito originalmente utilizando as ferramentas de CI/CD do Gitlab, disponível nesse link: [https://gitlab.com/devops-project-ufrn/ChampionshipAPI](https://gitlab.com/devops-project-ufrn/ChampionshipAPI)
+
+Após configurar tudo e fazer o deploy na Google Cloud, a aplicação estará disponível no link: [http://championship-api.duckdns.org/](http://championship-api.duckdns.org/)
 
 Configurações do Kubernetes [no README.md da pasta k8s](k8s/README.md)
 
